@@ -259,12 +259,14 @@ class Chromy extends Document {
     // truck redirects.
     let requestListener = (payload) => {
       if (payload.redirectResponse && payload.redirectResponse.url === url) {
+        console.log('requestListener url: ', url)
         url = payload.redirectResponse.headers.location
       }
     }
     const requestEventName = 'Network.requestWillBeSent'
     await this.on(requestEventName, requestListener)
     let listener = (payload) => {
+      console.log('listener url: ', url)
       if (payload.response.url === url) {
         response = payload.response
       }
@@ -273,6 +275,7 @@ class Chromy extends Document {
     await this.on(eventName, listener)
     try {
       await this._waitFinish(this.options.gotoTimeout, async () => {
+        console.log('_waitFinish url: ', url);
         await this.client.Page.navigate({url: completeUrl(url)})
         if (options.waitLoadEvent) {
           await this.client.Page.loadEventFired()

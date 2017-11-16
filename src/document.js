@@ -250,6 +250,7 @@ class Document {
           try {
             const now = Date.now()
             if (now - startTime > this.chromy.options.waitTimeout) {
+              console.log(`Selector '${selector}' not present in DOM after waiting for '${this.chromy.options.waitTimeout}'`);
               reject(new WaitTimeoutError('wait() timeout'))
               return
             }
